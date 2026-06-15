@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechGlow Blog - O Futuro do Design</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================
+           VARIÁVEIS CSS & CONFIGURAÇÕES BASE
+           ========================================== */
+        :root {
+            /* Cores e Gradientes */
+            --bg-dark: #0b0f19;
+            --bg-card: #151c2c;
+            --text-light: #f3f4f6;
+            --text-muted: #9ca3af;
+            
+            /* Requisito: Gradientes Lineares, Radiais e Múltiplos */
+            --gradient-linear-h: linear-gradient(90deg, #ff416c, #ff4b2b);
+            --gradient-linear-v: linear-gradient(180deg, #2193b0, #6dd5ed);
+            --gradient-radial: radial-gradient(circle, #8a2387, #e94057, #f27121);
+            
+            /* Múltiplos gradientes combinados (Efeito de fundo profundo) */
+            --gradient-complex: 
+                radial-gradient(at 0% 0%, rgba(255, 65, 108, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(33, 147, 176, 0.2) 0px, transparent 50%),
+                linear-gradient(135deg, #0b0f19 0%, #111827 100%);
+
+            --gradient-hover: linear-gradient(45deg, #f27121, #e94057, #8a2387);
+            
+            /* Tipografia (Requisito: Space Grotesk + Inter) */
+            --font-title: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            
+            --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.3);
+            --shadow-glow: 0 0 20px rgba(255, 65, 108, 0.4);
+            --border-radius: 12px;
+        }
+
+        /* Reset Global */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--gradient-complex);
+            background-attachment: fixed;
+            color: var(--text-light);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        /* ==========================================
+           COMPONENTES REUTILIZÁVEIS
+           ========================================== */
+
+        /* Requisito: Gradiente no texto */
+        .gradient-text {
+            background: var(--gradient-linear-h);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Requisito: Gradiente no botão + Efeito Hover */
+        .btn-primary {
+            background: var(--gradient-linear-h);
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            font-family: var(--font-title);
+            font-weight: 500;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            box-shadow: var(--shadow-soft);
+            display: inline-block;
+        }
+
+        /* Requisito: Gradiente que muda no hover */
+        .btn-primary:hover {
+            background: var(--gradient-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Títulos de Seção */
+        .section-title {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Requisito: Gradiente sutil em borda/detalhe */
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--gradient-linear-h);
+            border-radius: 2px;
+        }
+
+        /* Cards com Sombras e Hover */
+        .card {
+            background-color: var(--bg-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 65, 108, 0.3);
+            box-shadow: 0 15px 35px rgba(255, 65, 108, 0.1);
+        }
+
+        /* Mock de Imagens com gradientes variados */
+        .card-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        .img-1 { background: var(--gradient-linear-v); }
+        .img-2 { background: var(--gradient-radial); }
+        .img-3 { background: linear-gradient(45deg, #11998e, #38ef7d); }
+        .img-4 { background: linear-gradient(135deg, #654ea3, #eaafc8); }
+        .img-5 { background: linear-gradient(225deg, #4776e6, #8e54e9); }
+        .img-6 { background: linear-gradient(315deg, #f857a6, #ff5858); }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card-content h3 {
+            font-family: var(--font-title);
+            margin-bottom: 0.75rem;
+        }
+
+        .card-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            font-weight: 500;
+            color: #ff416c;
+        }
+
+        .read-more:hover {
+            color: #ff4b2b;
+            padding-left: 5px;
+        }
+
+        /* ==========================================
+           ESTRUTURA DO LAYOUT (Mobile-first)
+           ========================================== */
+
+        /* Requisito: Header com Flexbox */
+        .main-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: var(--font-title);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .logo span {
+            color: #ff416c;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-menu a {
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--text-light);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Requisito: Hero Section (Overlay com gradiente sutil) */
+        .hero {
+            position: relative;
+            padding: 4rem 1.5rem;
+            text-align: center;
+            background: radial-gradient(circle at center, rgba(233, 64, 87, 0.1) 0%, transparent 70%);
+            overflow: hidden;
+        }
+
+        .hero-tag {
+            display: inline-block;
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 65, 108, 0.3);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero h1 {
+            font-family: var(--font-title);
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 2rem auto;
+            font-size: 1.1rem;
+        }
+
+        /* Container de Conteúdo Principal */
+        .main-container {
+            padding: 2rem 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        /* Requisito: Seção de Destaques em Flexbox */
+        .featured-flex {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .featured-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Requisito: Seção de Recentes em Grid */
+        .recent-section {
+            margin-top: 3rem;
+        }
+
+        .recent-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .card-category {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #6dd5ed;
+            font-weight: 600;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Requisito: Sidebar com Flexbox */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .widget {
+            background-color: var(--bg-card);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+        }
+
+        .widget h3 {
+            font-family: var(--font-title);
+            margin-bottom: 1.2rem;
+        }
+
+        /* Autor Widget */
+        .author-widget {
+            text-align: center;
+        }
+
+        .author-widget .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: var(--gradient-radial);
+            margin: 0 auto 1rem auto;
+            padding: 4px;
+            background-clip: padding-box, border-box;
+            box-shadow: var(--shadow-glow);
+        }
+
+        /* Requisito: Borda com Gradiente sutil utilizando técnica CSS moderna */
+        .tech-gradient-border {
+            background: linear-gradient(var(--bg-card), var(--bg-card)) padding-box,
+                        var(--gradient-linear-v) border-box;
+            border: 2px solid transparent;
+        }
+
+        .categories-list {
+            list-style: none;
+        }
+
+        .categories-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .categories-list li a {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-muted);
+        }
+
+        .categories-list li a:hover {
+            color: #ff416c;
+        }
+
+        /* Newsletter Widget */
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: var(--border-radius);
+            color: #fff;
+            font-family: var(--font-body);
+        }
+
+        .newsletter-form input:focus {
+            outline: none;
+            border-color: #ff416c;
+        }
+
+        /* Footer */
+        .main-footer {
+            background-color: #060911;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 4rem;
+        }
+
+        /* ==========================================
+           MEDIA QUERIES (Responsividade de Mobile para Desktop)
+           ========================================== */
+
+        /* Dispositivos Médios (Tablets) */
+        @media (min-width: 768px) {
+            .main-header {
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 1.5rem 4rem;
+            }
+
+            .hero {
+                padding: 6rem 2rem;
+            }
+
+            .hero h1 {
+                font-size: 3.5rem;
+            }
+
+            .featured-flex {
+                flex-direction: row;
+            }
+
+            .featured-card {
+                flex: 1;
+            }
+
+            .recent-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Dispositivos Grandes (Desktops) */
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 2.5fr 1fr;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 4rem 2rem;
+            }
+
+            .recent-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .featured-card {
+                flex-direction: row;
+            }
+
+            .featured-card .card-image {
+                width: 40%;
+                height: auto;
+                min-height: 220px;
+            }
+
+            .featured-card .card-content {
+                width: 60%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">Tech<span>Glow</span></div>
+        <nav class="nav-menu">
+            <a href="#" class="active">Home</a>
+            <a href="#">Artigos</a>
+            <a href="#">Tutoriais</a>
+            <a href="#">Contato</a>
+        </nav>
+        <button class="btn-primary header-btn">Inscrever-se</button>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <span class="hero-tag">Tendências Globais</span>
+            <h1 class="gradient-text">Explorando as Fronteiras do Desenvolvimento Web</h1>
+            <p>Descubra como os gradientes complexos, IA e novas APIs do CSS estão moldando a próxima geração de interfaces digitais.</p>
+            <a href="#" class="btn-primary">Ler Artigo Principal</a>
+        </div>
+    </section>
+
+    <div class="main-container">
+        
+        <main class="content-area">
+            <section class="featured-section">
+                <h2 class="section-title">Posts em Destaque</h2>
+                <div class="featured-flex">
+                    <article class="card featured-card">
+                        <div class="card-image img-1"></div>
+                        <div class="card-content">
+                            <h3>O Poder do CSS Grid Avançado</h3>
+                            <p>Domine layouts complexos e alinhamentos milimétricos com técnicas modernas de Grid.</p>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+
+                    <article class="card featured-card">
+                        <div class="card-image img-2"></div>
+                        <div class="card-content">
+                            <h3>Design de Interação com Neomorfismo</h3>
+                            <p>Como balancear sombras, gradientes radiais e profundidade sem estragar a acessibilidade.</p>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="recent-section">
+                <h2 class="section-title">Posts Recentes</h2>
+                <div class="recent-grid">
+                    <article class="card">
+                        <div class="card-image img-3"></div>
+                        <div class="card-content">
+                            <span class="card-category">UI/UX</span>
+                            <h3>Tipografia Fluida no Web Design</h3>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-image img-4"></div>
+                        <div class="card-content">
+                            <span class="card-category">CSS</span>
+                            <h3>Animações de Alta Performance</h3>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-image img-5"></div>
+                        <div class="card-content">
+                            <span class="card-category">Dev</span>
+                            <h3>O Futuro do Subgrid no CSS</h3>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+                    <article class="card">
+                        <div class="card-image img-6"></div>
+                        <div class="card-content">
+                            <span class="card-category">Estratégia</span>
+                            <h3>Otimização de Performance Web</h3>
+                            <a href="#" class="read-more">Ler mais &rarr;</a>
+                        </div>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <aside class="sidebar">
+            <div class="widget author-widget">
+                <div class="avatar"></div>
+                <h3>Mariana Silva</h3>
+                <p>UI Engineer & Tech Writer apaixonada por CSS, gradientes vibrantes e arquitetura de componentes de software.</p>
+            </div>
+
+            <div class="widget tech-gradient-border">
+                <div class="widget-inner">
+                    <h3>Categorias</h3>
+                    <ul class="categories-list">
+                        <li><a href="#">Desenvolvimento <span>(12)</span></a></li>
+                        <li><a href="#">Design System <span>(8)</span></a></li>
+                        <li><a href="#">Acessibilidade <span>(5)</span></a></li>
+                        <li><a href="#">Novidades Tech <span>(19)</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="widget newsletter-widget">
+                <h3>Newsletter</h3>
+                <p>Receba semanalmente os melhores insights sobre front-end direto na sua caixa de entrada.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Seu melhor e-mail" required>
+                    <button type="submit" class="btn-primary">Inscrever-se</button>
+                </form>
+            </div>
+        </aside>
+
+    </div>
+
+    <footer class="main-footer">
+        <p>&copy; 2026 TechGlow Blog. Desenvolvido com CSS Moderno, Flexbox e Grid.</p>
+    </footer>
+
+</body>
+</html>
